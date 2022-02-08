@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- favicon -->
+    <link rel="icon" href="/todo.ico">
+    <title>TODO App</title>
+    <!-- Bootstrap icons link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <!-- Css file link -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <div class="app-container">
+
+            <div class="app-title text-center spacing-lg">
+                <h1>TODO App</h1>
+            </div>
+            <div class="border-bottom"></div>
+
+            <form action="/create-task" method="post" class="app-inputs">
+
+                <div class="field desc-field">
+
+                    <div class="field-title spacing-md">
+                        <h3>description</h3>
+                    </div>
+                    <!-- Input for description -->
+                    <input class="desc clean-input" type="text" name="description" placeholder="What do you need to do?"
+                        required>
+                </div>
+                <div class="border-bottom"></div>
+
+                <div class="bind flex">
+
+                    <div class="catg-field field">
+                        <div class="field-title spacing-md">
+                            <h3>category</h3>
+                        </div>
+                        <!-- Input for category -->
+                        <select name="category" class="catg clean-input">
+                            <option name="" value="">Choose a category</option>
+                            <option name="work" value="work">Work</option>
+                            <option name="school" value="school">School</option>
+                            <option name="cleaning" value="cleaning">Cleaning</option>
+                            <option name="personal" value="personal">Personal</option>
+                            <option name="other" value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="date-field field">
+                        <div class="field-title spacing-md">
+                            <h3>due date</h3>
+                        </div>
+                        <!-- Input for due date -->
+                        <input type="date" name="due_date" class="date clean-input">
+                    </div>
+                </div>
+                <div class="border-bottom"></div>
+
+                <div class="function flex center">
+                    <button type="submit" class="flex align add">
+                        <i class="bi bi-plus-lg icon"></i>
+                        <h3>add task</h3>
+                    </button>
+                </div>
+            </form>
+
+            <!-- task list is also a form where we will post checked box items to delete -->
+            <form action="/delete-tasks" method="post" class="mytask-container">
+
+                <h2 class="bold spacing-md">My Task's</h2>
+
+                <!-- Links to sort tasks -->
+                <div class="sort-functions flex evenly wrap">
+
+                    <a href="/sort-task/all" class="blue">
+                        <h3>All</h3>
+                    </a>
+
+                    <a href="/sort-task/cleaning" class="green">
+                        <h3>Cleaning</h3>
+                    </a>
+
+                    <a href="/sort-task/personal" class="red">
+                        <h3>Personal</h3>
+                    </a>
+
+                    <a href="/sort-task/school" class="orange">
+                        <h3>School</h3>
+                    </a>
+
+                    <a href="/sort-task/work" class="purple">
+                        <h3>Work</h3>
+                    </a>
+
+                    <a href="/sort-task/other" class="black">
+                        <h3>Other</h3>
+                    </a>
+                </div>
+
+                <div class="tasks-list">
+
+                    <!-- if task's list is empty then this notification will be displayed -->
+                    <% if(task.length===0){ %>
+                    <div class="empty flex center align red">
+                        <div class="empty-msg flex align">
+                            <i class="bi bi-clipboard icon"></i>
+                            <h2>List is Empty!</h2>
+                        </div>
+                    </div>
+                    <% } %>
+
+                    <!-- else create task cards -->
+                    <% task.map((element)=>{ %>
+                    <div class="task">
+                        <div class="border-bottom"></div>
+
+                        <div class="content flex between align">
+
+                            <div class="check-title-date flex align">
+                                <!-- check box input -->
+                                <input class="check" type="checkBox" name="checkbox" value="<%= element._id %>">
+
+                                <div class="title-date flex-col ">
+                                    <!-- displaying element description -->
+                                    <h2 class="spacing-sm"> <%= element.description %> </h2>
+
+                                    <div class="date flex align mt">
+                                        <i class="bi bi-calendar3 icon-sm"></i>
+                                        <!-- if date field not null then display date  -->
+                                        <!-- as date is object converting it into string and slicing -->
+                                        <% if(element.due_date !==null){ %>
+                            
+                                        <% let date=(element.due_date).toString() %>
+                                        <h3>
+                                        <%= `${date.slice(4,10)}, ${date.slice(11,15)}` %>
+                                        </h3>
+
+                                        <!-- else no deadline will be shown -->
+                                        <% } else { %>
+                                        <h3>no deadline</h3>
+                                        <% } %>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- if category exists then only create category field -->
+                            <!-- also adding category name as class to provide background color -->
+                            <% if(element.category){ %>
+                            <div class="category <%= element.category %>">
+                                <h3> <%= element.category%> </h3>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>       
+                    <% }) %>
+                    <!-- card ends -->
+                </div>
+
+                <!-- Delete tasks button -->
+                <div class="function flex center">
+                    <button type="submit" class="flex align delete">
+                        <i class="bi bi-trash icon"></i>
+                        <h3>delete task's</h3>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Home page JS file link -->
+    <script src="/js/script.js"></script>
+</body>
+</html>
