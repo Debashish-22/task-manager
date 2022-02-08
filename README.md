@@ -1,3 +1,4 @@
+![TODO App](https://user-images.githubusercontent.com/86547965/153013568-83192211-e5cc-4e09-954d-8154f1e3a1f5.gif)
 
 # TODO APP
 
